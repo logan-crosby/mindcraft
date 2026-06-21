@@ -1,0 +1,387 @@
+{
+  "version": 1,
+  "repository": "logan-crosby/mindcraft",
+  "roadmap": "Mindcraft Eight-Week Roadmap",
+  "generated_on": "2026-06-21",
+  "point_scale": [3, 5],
+  "labels": [
+    "roadmap",
+    "type:epic",
+    "type:story",
+    "pillar:reliability",
+    "pillar:operator",
+    "points:3",
+    "points:5",
+    "status:blocked"
+  ],
+  "pillars": [
+    {
+      "id": "reliability",
+      "name": "Runtime Reliability & Verification"
+    },
+    {
+      "id": "operator",
+      "name": "Operator Experience & Distribution"
+    }
+  ],
+  "sprints": [
+    {
+      "id": "s1",
+      "name": "Sprint 1 — Quality Baseline",
+      "start": "2026-06-22",
+      "end": "2026-07-05",
+      "capacity": 18,
+      "milestone_url": "https://github.com/logan-crosby/mindcraft/milestone/1",
+      "depends_on": []
+    },
+    {
+      "id": "s2",
+      "name": "Sprint 2 — Runtime Resilience",
+      "start": "2026-07-06",
+      "end": "2026-07-19",
+      "capacity": 18,
+      "milestone_url": "https://github.com/logan-crosby/mindcraft/milestone/2",
+      "depends_on": ["s1"]
+    },
+    {
+      "id": "s3",
+      "name": "Sprint 3 — Guided Operations",
+      "start": "2026-07-20",
+      "end": "2026-08-02",
+      "capacity": 18,
+      "milestone_url": "https://github.com/logan-crosby/mindcraft/milestone/3",
+      "depends_on": ["s2"]
+    },
+    {
+      "id": "s4",
+      "name": "Sprint 4 — Repeatable Distribution",
+      "start": "2026-08-03",
+      "end": "2026-08-16",
+      "capacity": 18,
+      "milestone_url": "https://github.com/logan-crosby/mindcraft/milestone/4",
+      "depends_on": ["s3"]
+    }
+  ],
+  "issues": [
+    {
+      "id": "e1",
+      "type": "epic",
+      "title": "[Epic] Automated Quality Foundation",
+      "pillar": "reliability",
+      "epic": "Automated Quality Foundation",
+      "sprint": "s1",
+      "points": null,
+      "dependencies": [],
+      "acceptance_criteria": [
+        "Node 18 and 20 checks run on every pull request.",
+        "Unit and smoke tests have repeatable fixtures and regression coverage.",
+        "Lifecycle and configuration regressions fail locally and in CI."
+      ],
+      "url": "https://github.com/logan-crosby/mindcraft/issues/1"
+    },
+    {
+      "id": "e2",
+      "type": "epic",
+      "title": "[Epic] Agent Lifecycle Reliability",
+      "pillar": "reliability",
+      "epic": "Agent Lifecycle Reliability",
+      "sprint": "s2",
+      "points": null,
+      "dependencies": ["e1"],
+      "acceptance_criteria": [
+        "Repeated failures cannot create unbounded restart loops.",
+        "Agent shutdown removes registered timers and listeners.",
+        "Operators receive redacted diagnostics for lifecycle failures."
+      ],
+      "url": "https://github.com/logan-crosby/mindcraft/issues/2"
+    },
+    {
+      "id": "e3",
+      "type": "epic",
+      "title": "[Epic] Configuration and Startup Experience",
+      "pillar": "operator",
+      "epic": "Configuration and Startup Experience",
+      "sprint": "s3",
+      "points": null,
+      "dependencies": ["e2"],
+      "acceptance_criteria": [
+        "Invalid configuration fails before agents spawn.",
+        "A doctor command reports readiness without starting Minecraft.",
+        "Dashboard and documentation expose the same startup diagnosis."
+      ],
+      "url": "https://github.com/logan-crosby/mindcraft/issues/3"
+    },
+    {
+      "id": "e4",
+      "type": "epic",
+      "title": "[Epic] Installable and Reproducible Releases",
+      "pillar": "operator",
+      "epic": "Installable and Reproducible Releases",
+      "sprint": "s4",
+      "points": null,
+      "dependencies": ["e3"],
+      "acceptance_criteria": [
+        "Supported Node and package contracts are machine-checkable.",
+        "CLI and Docker startup paths pass the same smoke contract.",
+        "Release candidates are validated from a clean installation."
+      ],
+      "url": "https://github.com/logan-crosby/mindcraft/issues/4"
+    },
+    {
+      "id": "s1a",
+      "type": "story",
+      "title": "[Story] Add CI lint and Node 18/20 matrix",
+      "pillar": "reliability",
+      "epic": "e1",
+      "sprint": "s1",
+      "points": 3,
+      "dependencies": [],
+      "acceptance_criteria": [
+        "GitHub Actions runs `npx eslint .` on Node 18 and Node 20.",
+        "The workflow runs on pull requests and pushes to `develop`.",
+        "A failing lint result blocks the workflow."
+      ],
+      "url": "https://github.com/logan-crosby/mindcraft/issues/5"
+    },
+    {
+      "id": "s1b",
+      "type": "story",
+      "title": "[Story] Introduce unit-test framework and shared fixtures",
+      "pillar": "reliability",
+      "epic": "e1",
+      "sprint": "s1",
+      "points": 5,
+      "dependencies": ["s1a"],
+      "acceptance_criteria": [
+        "A documented `npm test` command runs locally without Minecraft or external API keys.",
+        "Shared fixtures cover settings, profiles, child-process events, and mocked agent state.",
+        "At least one representative test demonstrates fixture use."
+      ],
+      "url": "https://github.com/logan-crosby/mindcraft/issues/6"
+    },
+    {
+      "id": "s1c",
+      "type": "story",
+      "title": "[Story] Build deterministic task smoke-test harness",
+      "pillar": "reliability",
+      "epic": "e1",
+      "sprint": "s1",
+      "points": 5,
+      "dependencies": ["s1b"],
+      "acceptance_criteria": [
+        "A smoke command validates task parsing and launch preparation without contacting a live Minecraft server.",
+        "The harness returns non-zero on malformed task fixtures.",
+        "CI runs at least one valid and one invalid fixture."
+      ],
+      "url": "https://github.com/logan-crosby/mindcraft/issues/7"
+    },
+    {
+      "id": "s1d",
+      "type": "story",
+      "title": "[Story] Add lifecycle and configuration regression tests",
+      "pillar": "reliability",
+      "epic": "e1",
+      "sprint": "s1",
+      "points": 5,
+      "dependencies": ["s1b", "s1c"],
+      "acceptance_criteria": [
+        "Tests cover child-process exit classification and restart eligibility.",
+        "Tests cover invalid settings, missing profiles, and malformed task input.",
+        "Regression cases run in the standard test command."
+      ],
+      "url": "https://github.com/logan-crosby/mindcraft/issues/8"
+    },
+    {
+      "id": "s2a",
+      "type": "story",
+      "title": "[Story] Define structured lifecycle states and errors",
+      "pillar": "reliability",
+      "epic": "e2",
+      "sprint": "s2",
+      "points": 5,
+      "dependencies": ["e1"],
+      "acceptance_criteria": [
+        "Agent lifecycle states and transitions use one documented contract.",
+        "Process exits and connection failures map to stable error codes.",
+        "Existing consumers retain human-readable messages."
+      ],
+      "url": "https://github.com/logan-crosby/mindcraft/issues/9"
+    },
+    {
+      "id": "s2b",
+      "type": "story",
+      "title": "[Story] Add bounded restart policy with backoff",
+      "pillar": "reliability",
+      "epic": "e2",
+      "sprint": "s2",
+      "points": 5,
+      "dependencies": ["s2a"],
+      "acceptance_criteria": [
+        "Restart attempts use a documented maximum and increasing delay.",
+        "Stable runtime resets the retry budget.",
+        "Exhaustion leaves the agent stopped with an actionable terminal state."
+      ],
+      "url": "https://github.com/logan-crosby/mindcraft/issues/10"
+    },
+    {
+      "id": "s2c",
+      "type": "story",
+      "title": "[Story] Guarantee listener, timer, and action cleanup",
+      "pillar": "reliability",
+      "epic": "e2",
+      "sprint": "s2",
+      "points": 5,
+      "dependencies": ["s2a"],
+      "acceptance_criteria": [
+        "Agent shutdown clears owned timers, socket listeners, and pending actions.",
+        "Repeated start and stop cycles do not increase listener counts.",
+        "Cleanup is idempotent and covered by regression tests."
+      ],
+      "url": "https://github.com/logan-crosby/mindcraft/issues/11"
+    },
+    {
+      "id": "s2d",
+      "type": "story",
+      "title": "[Story] Produce redacted diagnostic bundles",
+      "pillar": "reliability",
+      "epic": "e2",
+      "sprint": "s2",
+      "points": 3,
+      "dependencies": ["s2a", "s2c"],
+      "acceptance_criteria": [
+        "A diagnostic command captures versions, lifecycle state, errors, and configuration shape.",
+        "API keys, tokens, chat content, and full prompts are excluded.",
+        "The bundle is suitable for attachment to a GitHub issue."
+      ],
+      "url": "https://github.com/logan-crosby/mindcraft/issues/12"
+    },
+    {
+      "id": "s3a",
+      "type": "story",
+      "title": "[Story] Add schema-based configuration validation",
+      "pillar": "operator",
+      "epic": "e3",
+      "sprint": "s3",
+      "points": 5,
+      "dependencies": ["e2"],
+      "acceptance_criteria": [
+        "Settings, profiles, and environment overrides validate before agents spawn.",
+        "Errors identify the field, received value class, and expected constraint.",
+        "Valid existing example profiles continue to load."
+      ],
+      "url": "https://github.com/logan-crosby/mindcraft/issues/13"
+    },
+    {
+      "id": "s3b",
+      "type": "story",
+      "title": "[Story] Add npm run doctor environment checks",
+      "pillar": "operator",
+      "epic": "e3",
+      "sprint": "s3",
+      "points": 5,
+      "dependencies": ["s3a"],
+      "acceptance_criteria": [
+        "`npm run doctor` checks runtime, dependencies, profiles, paths, and ports.",
+        "The command does not start agents or require Minecraft.",
+        "Output includes pass, warning, and failure statuses with remediation."
+      ],
+      "url": "https://github.com/logan-crosby/mindcraft/issues/14"
+    },
+    {
+      "id": "s3c",
+      "type": "story",
+      "title": "[Story] Surface startup diagnostics in the dashboard",
+      "pillar": "operator",
+      "epic": "e3",
+      "sprint": "s3",
+      "points": 5,
+      "dependencies": ["s3b", "s2d"],
+      "acceptance_criteria": [
+        "The dashboard displays preflight, startup, and terminal failure states.",
+        "Operators can distinguish major startup failure categories.",
+        "Displayed diagnostics remain redacted."
+      ],
+      "url": "https://github.com/logan-crosby/mindcraft/issues/15"
+    },
+    {
+      "id": "s3d",
+      "type": "story",
+      "title": "[Story] Rewrite setup and troubleshooting guidance",
+      "pillar": "operator",
+      "epic": "e3",
+      "sprint": "s3",
+      "points": 3,
+      "dependencies": ["s3a", "s3b", "s3c"],
+      "acceptance_criteria": [
+        "README and FAQ follow supported local and Docker paths.",
+        "Troubleshooting maps symptoms to doctor and dashboard diagnostics.",
+        "Examples use supported Node versions and contain no credentials."
+      ],
+      "url": "https://github.com/logan-crosby/mindcraft/issues/16"
+    },
+    {
+      "id": "s4a",
+      "type": "story",
+      "title": "[Story] Define supported Node and package contract",
+      "pillar": "operator",
+      "epic": "e4",
+      "sprint": "s4",
+      "points": 3,
+      "dependencies": ["e3"],
+      "acceptance_criteria": [
+        "`package.json` declares supported Node versions and package metadata.",
+        "The lockfile and installation policy are documented.",
+        "Unsupported runtimes fail with a clear preflight message."
+      ],
+      "url": "https://github.com/logan-crosby/mindcraft/issues/17"
+    },
+    {
+      "id": "s4b",
+      "type": "story",
+      "title": "[Story] Add packaged CLI and startup entrypoint",
+      "pillar": "operator",
+      "epic": "e4",
+      "sprint": "s4",
+      "points": 5,
+      "dependencies": ["s4a", "s3a"],
+      "acceptance_criteria": [
+        "An installed command can run doctor, start Mindcraft, and select profiles or tasks.",
+        "CLI arguments preserve current `main.js` behavior.",
+        "Exit codes distinguish usage, validation, and runtime failures."
+      ],
+      "url": "https://github.com/logan-crosby/mindcraft/issues/18"
+    },
+    {
+      "id": "s4c",
+      "type": "story",
+      "title": "[Story] Add Docker health checks and local parity validation",
+      "pillar": "operator",
+      "epic": "e4",
+      "sprint": "s4",
+      "points": 5,
+      "dependencies": ["s4a", "s3b"],
+      "acceptance_criteria": [
+        "The container exposes a MindServer readiness health check.",
+        "Docker and local startup use the same configuration validation.",
+        "A documented smoke command verifies startup and clean shutdown."
+      ],
+      "url": "https://github.com/logan-crosby/mindcraft/issues/19"
+    },
+    {
+      "id": "s4d",
+      "type": "story",
+      "title": "[Story] Add release installation smoke matrix",
+      "pillar": "operator",
+      "epic": "e4",
+      "sprint": "s4",
+      "points": 5,
+      "dependencies": ["s4b", "s4c"],
+      "acceptance_criteria": [
+        "CI installs the release artifact in clean Node 18 and Node 20 environments.",
+        "The matrix runs doctor plus CLI and Docker smoke checks where supported.",
+        "Validation fails on missing files or startup-contract regressions."
+      ],
+      "url": "https://github.com/logan-crosby/mindcraft/issues/20"
+    }
+  ]
+}
