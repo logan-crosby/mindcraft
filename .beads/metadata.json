@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "mindcraft",
+  "project_id": "05b56736-68bd-4171-8828-03f817e4ee7f"
+}
