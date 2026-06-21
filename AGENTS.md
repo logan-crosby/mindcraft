@@ -1,84 +1,34 @@
-# Agent Instructions
+# Repository Guidelines
 
-This project uses **bd** (beads) for issue tracking. Run `bd prime` for full workflow context.
+## Project Structure & Module Organization
 
-## Quick Reference
+Mindcraft is a Node.js ES-module application. `main.js` loads configuration and starts agents. Core behavior lives in `src/agent/`; model-provider adapters are in `src/models/`; server, dashboard, and Minecraft orchestration are in `src/mindcraft/`. Reusable configuration belongs in `profiles/`, evaluation and research workflows in `tasks/`, dependency fixes in `patches/`, and optional proxy support in `services/`. Docker entrypoints are defined by `Dockerfile`, `Tasks.Dockerfile`, and `docker-compose.yml`.
 
-```bash
-bd ready              # Find available work
-bd show <id>          # View issue details
-bd update <id> --claim  # Claim work atomically
-bd close <id>         # Complete work
-bd dolt push          # Push beads data to remote
-```
+## Build, Test, and Development Commands
 
-## Non-Interactive Shell Commands
+- `npm install` installs dependencies and applies `patch-package` patches.
+- `npm start` or `node main.js` starts Mindcraft with profiles from `settings.js`.
+- `node main.js --profiles ./profiles/gemini.json` runs a specific profile.
+- `npx eslint .` checks JavaScript quality, including unhandled promises.
+- `npm run reinstall` removes modules and the lockfile, then performs a clean install.
+- `docker-compose up --build` builds and runs the containerized stack.
 
-**ALWAYS use non-interactive flags** with file operations to avoid hanging on confirmation prompts.
+Use Node.js 18 or 20 LTS; newer releases may break native dependencies.
 
-Shell commands like `cp`, `mv`, and `rm` may be aliased to include `-i` (interactive) mode on some systems, causing the agent to hang indefinitely waiting for y/n input.
+## Coding Style & Naming Conventions
 
-**Use these forms instead:**
-```bash
-# Force overwrite without prompting
-cp -f source dest           # NOT: cp source dest
-mv -f source dest           # NOT: mv source dest
-rm -f file                  # NOT: rm file
+Use four-space indentation, semicolons, ES-module imports, and `async`/`await` with every promise awaited or explicitly handled. Follow existing naming: `camelCase` for functions and variables, `PascalCase` for classes, and lowercase or snake_case filenames where established. Run ESLint before submitting changes. Keep provider-specific logic in `src/models/` and avoid unrelated refactors.
 
-# For recursive operations
-rm -rf directory            # NOT: rm -r directory
-cp -rf source dest          # NOT: cp -r source dest
-```
+## Testing Guidelines
 
-**Other commands that may prompt:**
-- `scp` - use `-o BatchMode=yes` for non-interactive
-- `ssh` - use `-o BatchMode=yes` to fail instead of prompting
-- `apt-get` - use `-y` flag
-- `brew` - use `HOMEBREW_NO_AUTO_UPDATE=1` env var
+There is no unified automated test suite or coverage threshold. Every change must pass `npx eslint .` and receive focused validation. For agent or Minecraft behavior, run the affected profile against a local LAN world. For task changes, run the relevant script or fixture under `tasks/` and record the command and result in the pull request.
 
-<!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:ca08a54f -->
-## Beads Issue Tracker
+## Commit, Pull Request & Agent Workflow
 
-This project uses **bd (beads)** for issue tracking. Run `bd prime` to see full workflow context and commands.
+Use focused Conventional Commit-style subjects such as `feat(dashboard): ...`, `fix: ...`, or `chore(docs): ...`. Pull requests should describe behavior, configuration impact, and validation; link the relevant issue and include screenshots for dashboard changes.
 
-### Quick Reference
+Track work with `bd`: claim an issue before implementation, keep its status current, and close it after verification. Use Lumen before broad code discovery and `rg` for exact strings. Preserve unrelated worktree changes and review the final diff before committing.
 
-```bash
-bd ready              # Find available work
-bd show <id>          # View issue details
-bd update <id> --claim  # Claim work
-bd close <id>         # Complete work
-```
+## Security & Configuration
 
-### Rules
-
-- Use `bd` for ALL task tracking — do NOT use TodoWrite, TaskCreate, or markdown TODO lists
-- Run `bd prime` for detailed command reference and session close protocol
-- Use `bd remember` for persistent knowledge — do NOT use MEMORY.md files
-
-## Session Completion
-
-**When ending a work session**, you MUST complete ALL steps below. Work is NOT complete until `git push` succeeds.
-
-**MANDATORY WORKFLOW:**
-
-1. **File issues for remaining work** - Create issues for anything that needs follow-up
-2. **Run quality gates** (if code changed) - Tests, linters, builds
-3. **Update issue status** - Close finished work, update in-progress items
-4. **PUSH TO REMOTE** - This is MANDATORY:
-   ```bash
-   git pull --rebase
-   bd dolt push
-   git push
-   git status  # MUST show "up to date with origin"
-   ```
-5. **Clean up** - Clear stashes, prune remote branches
-6. **Verify** - All changes committed AND pushed
-7. **Hand off** - Provide context for next session
-
-**CRITICAL RULES:**
-- Work is NOT complete until `git push` succeeds
-- NEVER stop before pushing - that leaves work stranded locally
-- NEVER say "ready to push when you are" - YOU must push
-- If push fails, resolve and retry until it succeeds
-<!-- END BEADS INTEGRATION -->
+Copy `keys.example.json` to ignored `keys.json`, or use environment variables; never commit credentials. Keep `allow_insecure_coding` disabled unless required. If enabled, use Docker and never connect the bot to public servers.
